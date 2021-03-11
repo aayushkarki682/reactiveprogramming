@@ -18,24 +18,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @RunWith(SpringRunner.class)
-@WebFluxTest
+@WebFluxTest //it is going to scan for annotatted classes like restcontroller, controller and more
+             //but it is not going to scan the class annotatted with @component or @service or @repository classes
 public class FluxAndMonoControllerTest {
 
     @Autowired
-    WebTestClient webTestClient;
+    WebTestClient webTestClient;  //non-blocking client and it is going to create by the WebFluxTest
 
     @Test
     public void flux_approach1(){
 
         Flux<Integer> integerFlux = webTestClient.get().uri("/flux")
                 .accept(MediaType.APPLICATION_JSON_UTF8)
-                .exchange()
+                .exchange()  //this is the call which is going to invoke the endpoint
                 .expectStatus().isOk()
                 .returnResult(Integer.class)
-                .getResponseBody();
+                .getResponseBody();   //this gives us the actual flux
 
         StepVerifier.create(integerFlux)
-                .expectSubscription()
+                .expectSubscription()  //we expect the subscription to be send to us
                 .expectNext(1)
                 .expectNext(2)
                 .expectNext(3)
