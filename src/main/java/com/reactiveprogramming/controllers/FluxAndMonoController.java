@@ -23,9 +23,8 @@ public class FluxAndMonoController {
 
     @GetMapping(value = "/fluxstream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     //Providing the return value of stream of JSON value, the browser renders the value one by one
-    public Flux<Integer> returnFluxStream(){
-        return Flux.just(1,2,3,4)
-                .delayElements(Duration.ofSeconds(1))
+    public Flux<Long> returnFluxStream(){
+        return Flux.interval(Duration.ofSeconds(1))  //thi gives use the infinite stream of long
                 .log();
     }
 }
